@@ -1,4 +1,4 @@
-package com.r8me.authtools.core;
+package com.r8me.authtools.core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

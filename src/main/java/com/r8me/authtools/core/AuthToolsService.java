@@ -1,5 +1,7 @@
 package com.r8me.authtools.core;
 
+import com.r8me.authtools.core.dto.AuthUserDetailsDTO;
+import com.r8me.authtools.core.dto.TokenDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +40,20 @@ public class AuthToolsService {
             throw new IllegalStateException(response.getBody().getReason());
         }
 
-        throw new IllegalStateException("Unknown error, http status: "+response.getStatusCodeValue());
+        throw new IllegalStateException("Unknown error, http status: " + response.getStatusCodeValue());
     }
+
+    public AuthUserDetailsDTO getUserDetails(TokenDTO tokenDTO) {
+
+        HttpEntity<TokenDTO> httpEntity = new HttpEntity<>(tokenDTO);
+
+        ResponseEntity<AuthUserDetailsDTO> response = restTemplate.exchange(URI.create(url + "/user-details"), HttpMethod.POST, httpEntity, AuthUserDetailsDTO.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+
+        throw new IllegalStateException("Unknown error, http status: " + response.getStatusCodeValue());
+    }
+
 }
